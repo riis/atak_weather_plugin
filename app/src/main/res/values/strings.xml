@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">RIIS ATAK Plugin</string>
+    <!-- description -->
+    <string name="app_desc">Plugin developed by RIIS for the ATAK application</string>
+    
+    
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    
+</resources>
