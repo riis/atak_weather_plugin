@@ -2,7 +2,6 @@
 package com.riis.atakweather.plugin;
 
 import com.atakmap.android.ipc.AtakBroadcast;
-import com.riis.atakweather.PluginTemplateDropDownReceiver;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +9,8 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.ViewGroup;
+
+import timber.log.Timber;
 import transapps.mapi.MapView;
 import transapps.maps.plugin.tool.Group;
 import transapps.maps.plugin.tool.Tool;
@@ -20,6 +21,7 @@ public class PluginTemplateTool extends Tool implements ToolDescriptor {
     private final Context context;
 
     public PluginTemplateTool(Context context) {
+        Timber.d("***** constructor *****");
         this.context = context;
     }
 
@@ -56,6 +58,9 @@ public class PluginTemplateTool extends Tool implements ToolDescriptor {
             Bundle arg3,
             ToolCallback arg4) {
 
+
+        Timber.d("***** onActivate *****");
+
         // Hack to close the dropdown that automatically opens when a tool
         // plugin is activated.
         if (arg4 != null) {
@@ -65,11 +70,12 @@ public class PluginTemplateTool extends Tool implements ToolDescriptor {
 
         //arg2.setVisibility(ViewGroup.INVISIBLE);
         Intent i = new Intent(
-                PluginTemplateDropDownReceiver.SHOW_PLUGIN);
+                RIISDropDownReceiver.SHOW_PLUGIN);
         AtakBroadcast.getInstance().sendBroadcast(i);
     }
 
     @Override
     public void onDeactivate(ToolCallback arg0) {
+        Timber.d("***** onDeactivate *****");
     }
 }

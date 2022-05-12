@@ -4,6 +4,8 @@ package com.riis.atakweather.plugin;
 import java.io.File;
 import android.content.Context;
 
+import timber.log.Timber;
+
 /**
  * Boilerplate code for loading native.
  */
@@ -19,6 +21,7 @@ public class PluginNativeLoader {
     * non-conflicting package name.
     */
     synchronized static public void init(final Context context) {
+        Timber.d("***** loader init *****");
         if (ndl == null) {
             try {
                 ndl = context.getPackageManager()

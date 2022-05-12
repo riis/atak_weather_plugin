@@ -1,4 +1,4 @@
-package com.riis.atakweather.map
+package com.riis.atakweather.map.shape
 
 data class Coordinate(
     val latitude: Double,

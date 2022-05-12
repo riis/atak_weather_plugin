@@ -1,6 +1,6 @@
 package com.riis.atakweather.weather
 
-import com.riis.atakweather.map.IShape
+import com.riis.atakweather.map.shape.IShape
 
 data class WeatherAlert(
     val title: String,

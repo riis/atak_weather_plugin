@@ -1,7 +1,7 @@
 package com.riis.atakweather.weather.gov
 
-import com.riis.atakweather.map.Coordinate
-import com.riis.atakweather.map.Polygon
+import com.riis.atakweather.map.shape.Coordinate
+import com.riis.atakweather.map.shape.Polygon
 import com.riis.atakweather.weather.IWeatherRepository
 import com.riis.atakweather.weather.WeatherAlert
 import com.riis.atakweather.weather.gov.data.AlertResponse

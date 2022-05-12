@@ -1,4 +1,4 @@
-package com.riis.atakweather
+package com.riis.atakweather.plugin
 
 import android.content.Context
 import android.content.Intent
@@ -8,19 +8,24 @@ import com.atak.plugins.impl.PluginLayoutInflater
 import com.atakmap.android.cot.CotMapComponent
 import com.atakmap.android.dropdown.DropDown.OnStateListener
 import com.atakmap.android.dropdown.DropDownReceiver
+import com.atakmap.android.hierarchy.HierarchyListReceiver
 import com.atakmap.android.ipc.AtakBroadcast
 import com.atakmap.android.maps.MapView
 import com.atakmap.coremap.cot.event.CotEvent
 import com.atakmap.coremap.cot.event.CotPoint
 import com.atakmap.coremap.log.Log
 import com.atakmap.coremap.maps.time.CoordinatedTime
-import com.riis.atakweather.plugin.R
+import com.atakmap.map.layer.opengl.GLLayerFactory
+import com.riis.atakweather.map.overlay.GLWeatherLayer
+import com.riis.atakweather.map.overlay.WeatherLayer
+import com.riis.atakweather.networkKoinModule
 import com.riis.atakweather.weather.govWeatherKoinModule
 import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
 import timber.log.Timber
 import java.util.UUID
 
-class PluginTemplateDropDownReceiver(
+class RIISDropDownReceiver(
     mapView: MapView?,
     private val pluginContext: Context
 ) : DropDownReceiver(mapView), OnStateListener {
@@ -30,16 +35,32 @@ class PluginTemplateDropDownReceiver(
         null
     )
 
+    private var layer: WeatherLayer? = null
+
     //    private val uid = UUID.randomUUID().toString()
     private var lon = -122.084
 
     /**************************** CONSTRUCTOR  */
     init {
-        loadKoinModules(listOf(networkKoinModule, govWeatherKoinModule))
+        Timber.d("***** Start dropdown receiver *****")
+        startKoin {
+            loadKoinModules(listOf(networkKoinModule, govWeatherKoinModule))
+        }
+        Timber.d("***** Finished init dropdown receiver *****")
     }
 
     /**************************** PUBLIC METHODS  */
-    public override fun disposeImpl() {}
+    public override fun disposeImpl() {
+        try {
+            layer?.let {
+                mapView.removeLayer(layer)
+            }
+        } catch (_: Exception) {
+        } finally {
+            layer = null
+            GLLayerFactory.unregister(GLWeatherLayer.SPI)
+        }
+    }
 
     /**************************** INHERITED METHODS  */
     override fun onReceive(context: Context, intent: Intent) {
@@ -57,12 +78,35 @@ class PluginTemplateDropDownReceiver(
             )
         }
 
+        GLLayerFactory.register(GLWeatherLayer.SPI)
         val button: Button = mainView.findViewById(R.id.place_marker_button)
         button.setOnClickListener {
             Timber.d("***** Push *****")
 
             val event = CotEvent()
             val time = CoordinatedTime()
+
+            synchronized(this) {
+                if (layer != null) {
+                    try {
+                        mapView.removeLayer(layer)
+                    } catch (_: Exception) {
+                    }
+                    mapView.addLayer(layer)
+                    return@synchronized
+                }
+
+                layer = WeatherLayer("RIIS Test Layer").also {
+                    mapView.addLayer(MapView.RenderStack.MAP_SURFACE_OVERLAYS, it)
+                    it.isVisible = true
+                }
+
+                // Refresh Overlay Manager
+                AtakBroadcast.getInstance().sendBroadcast(
+                    Intent(HierarchyListReceiver.REFRESH_HIERARCHY)
+                )
+            }
+
 
             event.uid = UUID.randomUUID().toString()
             event.type = "a-f-G-U-C-I"
@@ -92,7 +136,7 @@ class PluginTemplateDropDownReceiver(
     override fun onDropDownClose() {}
 
     companion object {
-        val TAG: String = PluginTemplateDropDownReceiver::class.java.simpleName
+        val TAG: String = RIISDropDownReceiver::class.java.simpleName
         const val SHOW_PLUGIN = "com.riis.atakweather.SHOW_PLUGIN"
     }
 

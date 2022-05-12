@@ -7,8 +7,8 @@ import java.util.LinkedList;
 
 import com.atakmap.android.maps.MapComponent;
 import com.atakmap.android.maps.MapView;
-import com.riis.atakweather.PluginTemplateMapComponent;
 
+import timber.log.Timber;
 import transapps.maps.plugin.lifecycle.Lifecycle;
 import android.app.Activity;
 import android.content.Context;
@@ -24,6 +24,7 @@ public class PluginTemplateLifecycle implements Lifecycle {
     private final static String TAG = "PluginTemplateLifecycle";
 
     public PluginTemplateLifecycle(Context ctx) {
+        Timber.d("***** lifecycle init *****");
         this.pluginContext = ctx;
         this.overlays = new LinkedList<>();
         this.mapView = null;
@@ -45,7 +46,7 @@ public class PluginTemplateLifecycle implements Lifecycle {
         }
         this.mapView = (MapView) arg1.getView();
         PluginTemplateLifecycle.this.overlays
-                .add(new PluginTemplateMapComponent());
+                .add(new RIISMapComponent());
 
         // create components
         Iterator<MapComponent> iter = PluginTemplateLifecycle.this.overlays
