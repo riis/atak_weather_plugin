@@ -44,8 +44,8 @@ takDebugKeyAlias=<alias>
 takDebugKeyPassword=<password>
 
 # Release Keystore
-takReleaseKeyFile=/Users/ljustice/workspace/atak-civ/keystore/debug.keystore
-takReleaseKeyFilePassword=
-takReleaseKeyAlias=
-takReleaseKeyPassword=
+takReleaseKeyFile=<full file path>
+takReleaseKeyFilePassword=<password>
+takReleaseKeyAlias=<alias>
+takReleaseKeyPassword=<password>
 ```
