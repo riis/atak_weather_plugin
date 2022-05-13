@@ -1,26 +1,26 @@
-(Plugin Name)
+RIIS ATAK Weather
 
 
 _________________________________________________________________
 PURPOSE AND CAPABILITIES
 
-(General Description)
+A CivATAK plugin that provides an overlay to display weather data as an overlay for the map
 
 
 _________________________________________________________________
 STATUS
 
-(In Progress?  Expected release?  Released?  To Who?  When?)
+Early Development
 
 _________________________________________________________________
 POINT OF CONTACTS
 
-(Who is developing this)
+https://riis.com/contact/
 
 _________________________________________________________________
 PORTS REQUIRED
 
-(This is important for ATO, networking, and other security concerns)
+TBD
 
 _________________________________________________________________
 EQUIPMENT REQUIRED
@@ -30,9 +30,6 @@ EQUIPMENT SUPPORTED
 
 _________________________________________________________________
 COMPILATION
-
-_________________________________________________________________
-DEVELOPER NOTES
 
 To compile, you will need the appropriate signing keys and have your `local.properties` configured to use them. The following should be added to `local.properties` with the appropriate values
 
@@ -49,3 +46,8 @@ takReleaseKeyFilePassword=<password>
 takReleaseKeyAlias=<alias>
 takReleaseKeyPassword=<password>
 ```
+
+_________________________________________________________________
+DEVELOPER NOTES
+
+
