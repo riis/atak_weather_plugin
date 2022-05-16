@@ -1,0 +1,51 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: gradle
+        
+    - name: Load Debug Keystore
+      env:
+        DEBUG_ALIAS: ${{ secrets.DEBUG_KEYSTORE_ALIAS }}
+        DEBUG_PASSWORD: ${{ secrets.DEBUG_KEYSTORE_PASSWORD }}
+        DEBUG_KEYSTORE_ENCODED: ${{ secrets.DEBUG_KEYSTORE_KEYSTORE }}
+      run: |
+        DEBUG_KEYSTORE_PATH="${RUNNER_TEMP}"/keystore
+        mkdir "${DEBUG_KEYSTORE_PATH}"
+        echo $DEBUG_KEYSTORE_ENCODED | base64 -di > "${DEBUG_KEYSTORE_PATH}"/debug_keystore.jks
+        echo takDebugKeyFile="${DEBUG_KEYSTORE_PATH}"/debug_keystore.jks >> ./local.properties
+        echo takDebugKeyFilePassword="${DEBUG_PASSWORD}" >> ./local.properties
+        echo takDebugKeyAlias="${DEBUG_ALIAS}" >> ./local.properties
+        echo takDebugKeyPassword="${DEBUG_PASSWORD}" >> ./local.properties
+        echo takReleaseKeyFile="${DEBUG_KEYSTORE_PATH}"/debug_keystore.jks >> ./local.properties
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+      
+    - name: Build CIV Debug
+      run: ./gradlew clean assembleCivDebug
+      
+    - name: Upload CIV Debug
+      uses: actions/upload-artifact@v2
+      with:
+        name: Build Artifacts
+        path: app/build/outputs/apk/civ/debug/
+    
+        
