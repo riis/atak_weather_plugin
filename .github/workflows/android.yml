@@ -26,7 +26,7 @@ jobs:
       env:
         DEBUG_ALIAS: ${{ secrets.DEBUG_KEYSTORE_ALIAS }}
         DEBUG_PASSWORD: ${{ secrets.DEBUG_KEYSTORE_PASSWORD }}
-        DEBUG_KEYSTORE_ENCODED: ${{ secrets.DEBUG_KEYSTORE_KEYSTORE }}
+        DEBUG_KEYSTORE_ENCODED: ${{ secrets.DEBUG_KEYSTORE_ENCODED }}
       run: |
         DEBUG_KEYSTORE_PATH="${RUNNER_TEMP}"/keystore
         mkdir "${DEBUG_KEYSTORE_PATH}"
