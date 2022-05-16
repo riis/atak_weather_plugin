@@ -25,13 +25,11 @@ class WeatherOverlayQuery(private val model: WeatherOverlayModel) : DeepMapItemQ
         val ret: SortedSet<MapItem> = TreeSet(
             MapItem.ZORDER_HITTEST_COMPARATOR
         )
-
         model.getLayers().forEach {
             if (it.isVisible && it.getBounds().intersects(bounds)) {
                 ret.add(it.metaShape)
             }
         }
-
         return ret
     }
 
