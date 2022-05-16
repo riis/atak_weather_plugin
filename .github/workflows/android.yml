@@ -22,6 +22,7 @@ jobs:
         cache: gradle
         
     - name: Load Debug Keystore
+      working-directory: ./plugins/weather
       env:
         DEBUG_ALIAS: ${{ secrets.DEBUG_KEYSTORE_ALIAS }}
         DEBUG_PASSWORD: ${{ secrets.DEBUG_KEYSTORE_PASSWORD }}
@@ -37,15 +38,17 @@ jobs:
         echo takReleaseKeyFile="${DEBUG_KEYSTORE_PATH}"/debug_keystore.jks >> ./local.properties
 
     - name: Grant execute permission for gradlew
+      working-directory: ./plugins/weather
       run: chmod +x gradlew
       
     - name: Build CIV Debug
+      working-directory: ./plugins/weather
       run: ./gradlew clean assembleCivDebug
       
     - name: Upload CIV Debug
       uses: actions/upload-artifact@v2
       with:
         name: Build Artifacts
-        path: app/build/outputs/apk/civ/debug/
+        path: plugins/weather/app/build/outputs/apk/civ/debug/
     
         
